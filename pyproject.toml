@@ -47,5 +47,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 markers = [
-    "markdown"
+    "markdown",
+    "pdf",
+    "visual"
 ]

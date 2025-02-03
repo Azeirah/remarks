@@ -29,6 +29,7 @@ from .utils import (
     get_ui_path,
     load_json_file,
 )
+from .warnings import scrybble_warning_only_v6_supported
 
 SVG_VIEWBOX_PATTERN = re.compile(r"^<svg .+ viewBox=\"([\-\d.]+) ([\-\d.]+) ([\-\d.]+) ([\-\d.]+)\">$")
 
@@ -173,7 +174,7 @@ def process_document(
                 temp_svg.close()
                 os.remove(temp_svg.name)
         else:
-            add_error_annotation(page, ": This page is not V6")
+            scrybble_warning_only_v6_supported.render_as_annotation(page)
 
         (ann_data, has_ann_hl), version = parse_rm_file(rm_annotation_file)
 
