@@ -5,11 +5,6 @@ from .parsing import (
     check_rm_file_version
 )
 
-from .drawing import (
-    draw_annotations_on_pdf,
-    add_smart_highlight_annotations,
-)
-
 from .text import (
     check_if_text_extractable,
     extract_groups_from_pdf_ann_hl,
