@@ -119,7 +119,12 @@ def process_document(
 
                 # if the background page is not empty, need to merge svg on top of background page
                 if page.get_contents() != []:
+                    page_rotation = page.rotation
+                    page.set_rotation(0) # Honestly not sure why this is needed since we're also inverting rotation below, but it is...
                     w_bg, h_bg = page.cropbox.width, page.cropbox.height
+                    if int(page_rotation) in [90, 270]:
+                        # Swap height and width for rotated pages
+                        w_bg, h_bg = h_bg, w_bg
                     # find the (top, right) coordinates of the svg
                     x_shift, y_shift, w_svg, h_svg = 0, 0, PAGE_WIDTH_PT, PAGE_HEIGHT_PT
                     with open(temp_svg.name, "r") as f:
@@ -157,7 +162,10 @@ def process_document(
                                         height=height)
                     page.show_pdf_page(fitz.Rect(x_bg, y_bg, x_bg + w_bg, y_bg + h_bg),
                                        rmc_pdf_src,
-                                       page_idx)
+                                       page_idx,
+                                       # The rect above is in rotated coordinates, so we need to rotate the page to match
+                                       # ... why this needs to be the negative of the page rotation is beyond me though...
+                                       rotate=-page_rotation)
                     page.show_pdf_page(fitz.Rect(x_svg, y_svg, x_svg + w_svg, y_svg + h_svg),
                                        svg_pdf,
                                        0)
