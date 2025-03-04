@@ -93,6 +93,26 @@ def highlights_document():
         }
     )
 
+@pytest.fixture
+def highlights_multiline_document():
+    return NotebookMetadata(
+        description="""
+        This document contains a multi-line smart highlight on the first page.
+        """,
+        notebook_name="Turing_Paper_1936",
+        rmn_source="tests/in/multi-line highlights.rmn",
+        notebook_type=ReMarkableNotebookType.PDF,
+        pdf_pages=36,
+        rm_files=[
+            {
+                ".rm_file_version": ReMarkableAnnotationsFileHeaderVersion.V6,
+                "output_document_position": 0,
+            }
+        ],
+        export_properties={
+            "merged_pages": 36
+        }
+    )
 
 @pytest.fixture
 def v5_document():
@@ -195,6 +215,7 @@ all_notebooks = [
     "markdown_tags_document",
     "gosper_notebook",
     "highlights_document",
+    "highlights_multiline_document",
     "colored_document",
     "v5_document",
     "black_and_white"
