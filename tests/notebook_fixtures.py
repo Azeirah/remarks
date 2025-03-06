@@ -3,6 +3,7 @@ from tests.NotebookMetadata import NotebookMetadata
 from RemarkableNotebookType import ReMarkableNotebookType
 from remarks.metadata import ReMarkableAnnotationsFileHeaderVersion
 from remarks.warnings import scrybble_warning_only_v6_supported
+from rmscene.scene_items import PenColor
 
 
 @pytest.fixture
@@ -16,7 +17,8 @@ def markdown_tags_document():
         notebook_type=ReMarkableNotebookType.NOTEBOOK,
         export_properties={
             "merged_pages": 2
-        }
+        },
+        smart_highlights=[],
     )
 
 
@@ -61,7 +63,8 @@ def gosper_notebook():
                 }
             ]
         },
-        notebook_type=ReMarkableNotebookType.NOTEBOOK
+        notebook_type=ReMarkableNotebookType.NOTEBOOK,
+        smart_highlights=[],
     )
 
 
@@ -90,9 +93,51 @@ def highlights_document():
         ],
         export_properties={
             "merged_pages": 36
-        }
+        },
+        smart_highlights=[[
+            "numbers may be described briefly as the real",
+            "numbers whose expressions as a decimal are calculable by finite means.",
+            "theory of functions",
+            "According to my definition, a number is computable",
+            "if its decimal can be written down by a machine.",
+            "In particular, I show that certain large classes",
+            "of numbers are computable.",
+            "The computable numbers do not, however, include",
+            "all definable numbers,",
+            "Although the class of computable numbers is so great, and in many",
+            # Avays is due to an OCR error
+            "Avays similar to the class of real numbers, it is nevertheless enumerable.",
+        ]],
     )
 
+@pytest.fixture
+def highlights_multiline_document():
+    return NotebookMetadata(
+        description="""
+        This document contains a multi-line smart highlight and multiple columns.
+        """,
+        notebook_name="multi column pdf.pdf",
+        rmn_source="tests/in/multi-line highlights.rmn",
+        notebook_type=ReMarkableNotebookType.PDF,
+        pdf_pages=1,
+        rm_files=[
+            {
+                ".rm_file_version": ReMarkableAnnotationsFileHeaderVersion.V6,
+                "output_document_position": 0,
+            }
+        ],
+        export_properties={
+            "merged_pages": 1
+        },
+        smart_highlights=[[ 
+            "suddenly there came a tapping,",
+            "Eagerly I wished the morrow;—vainly I",
+            "had sought to borrow",
+            "Let my heart be still a moment and this",
+            "But, with mien of lord or lady, perched",
+            "above my chamber door—"
+        ]],
+    )
 
 @pytest.fixture
 def v5_document():
@@ -132,7 +177,8 @@ def v5_document():
                     "output_document_position": 27
                 }
             ]
-        }
+        },
+        smart_highlights=[],
     )
 
 
@@ -154,7 +200,8 @@ def black_and_white():
         ],
         export_properties={
             "merged_pages": 1
-        }
+        },
+        smart_highlights=[],
     )
 
 
@@ -188,13 +235,15 @@ def colored_document():
         ],
         export_properties={
             "merged_pages": 4
-        }
+        },
+        smart_highlights=[],
     )
 
 all_notebooks = [
     "markdown_tags_document",
     "gosper_notebook",
     "highlights_document",
+    "highlights_multiline_document",
     "colored_document",
     "v5_document",
     "black_and_white"

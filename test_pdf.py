@@ -1,7 +1,8 @@
 import pytest
 
-from tests.pdf_test_support import assert_page_renders_without_warnings, assert_warning_exists
+from tests.pdf_test_support import assert_page_renders_without_warnings, assert_warning_exists, extract_annot
 from tests.notebook_fixtures import *
+
 
 r"""
  _____  _____  ______
@@ -43,4 +44,13 @@ def test_warnings_match_specification(notebook, remarks_document):
             # If no warnings specified for this page, verify page is clean
             assert_page_renders_without_warnings(remarks_document, page_num)
 
-
+@pytest.mark.pdf
+@pytest.mark.parametrize("notebook", all_notebooks, indirect=True)
+def test_smart_highlights(notebook, remarks_document):
+    for page_num, page_highlights in enumerate(notebook.smart_highlights):
+        page = remarks_document[page_num]
+        words_on_page = page.get_textpage().extractWORDS()
+        for i, annotation in enumerate(page.annots()):
+            text = extract_annot(annotation, words_on_page)
+            assert text == page_highlights[i]
+            # We should implement the colour check as well, once that is ready.

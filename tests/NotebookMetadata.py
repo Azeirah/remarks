@@ -3,6 +3,8 @@ from typing import Optional
 
 from RemarkableNotebookType import ReMarkableNotebookType
 
+from rmscene.scene_items import PenColor
+
 
 @dataclass
 class NotebookMetadata:
@@ -28,3 +30,6 @@ class NotebookMetadata:
 
     export_properties: Optional[dict]
     """Metadata on what happens when the notebook is exported by Remarks."""
+    
+    smart_highlights: list[list[str]]
+    """For each page in the document, a list of expected highlights. Each highlight is a string of text."""
